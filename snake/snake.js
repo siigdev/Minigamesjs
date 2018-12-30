@@ -15,16 +15,18 @@ window.onload = function setup() {
 function draw() {
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, width, height);
+  fruit.draw();
+  snake.collision();
+  snake.update();
+  snake.draw();
+
   ctx.fillStyle = "white";
   ctx.font = "25px Arial";
   ctx.fillText(snake.point, width / 2, 25);
   if (snake.eat(fruit)) {
     fruit.spawn();
   }
-  fruit.draw();
-  snake.update();
-  snake.collision();
-  snake.draw();
+
 }
 function controls(key) {
   switch (key.key) {
@@ -56,7 +58,6 @@ class Fruit {
     this.y = Math.floor((Math.random() * height) / scale + 0) * scale;
   }
 }
-
 class Snake {
   constructor() {
     this.point = 0;
@@ -67,7 +68,6 @@ class Snake {
     this.tail = [];
   }
   update() {
-    this.collision();
     for (let i = 0; i < this.tail.length - 1; i++) {
       this.tail[i] = this.tail[i + 1];
     }
@@ -90,7 +90,7 @@ class Snake {
     return false;
   }
   collision() {
-    if (this.x > c.width || this.y > c.height || this.y < 0 || this.x < 0) {
+    if (this.x >= c.width || this.y >= c.height || this.y < 0 || this.x < 0) {
       this.reset();
     }
     for (let i = 0; i < this.tail.length; i++) {
