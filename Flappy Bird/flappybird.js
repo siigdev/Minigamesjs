@@ -4,7 +4,8 @@ window.onload = function setup() {
   width = c.width;
   ctx = c.getContext("2d");
   bird = new Bird();
-  document.addEventListener("keydown", controls);
+  pipe = new Pipe();
+  document.addEventListener("keypress", controls);
   setInterval(draw, 1000 / 15);
 };
 function draw() {
@@ -12,6 +13,8 @@ function draw() {
   ctx.fillRect(0, 0, width, height);
   bird.update();
   bird.draw();
+  pipe.update();
+  pipe.draw();
 }
 function controls(key) {
   switch (key.code) {
@@ -21,6 +24,21 @@ function controls(key) {
     case "Escape":
       console.log(key);
   }
+}
+class Pipe {
+    constructor(){
+        this.x = width;
+        this.height;
+        this.speed = 10;
+    }
+    draw(){
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(this.x, 10, 50, 50);
+    }
+    update(){
+        this.x = this.x-this.speed;
+    }
+
 }
 class Bird {
   constructor() {
