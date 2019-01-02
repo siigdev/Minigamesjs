@@ -4,17 +4,28 @@ window.onload = function setup() {
   width = c.width;
   ctx = c.getContext("2d");
   bird = new Bird();
-  pipe = new Pipe();
+  pipes = [];
+  pipes.push(new Pipe());
   document.addEventListener("keyup", controls);
   setInterval(draw, 1000 / 15);
+  setInterval(createpipe, 1500 / 1);
 };
 function draw() {
   ctx.fillStyle = "#7EC2CB";
   ctx.fillRect(0, 0, width, height);
   bird.update();
   bird.draw();
-  pipe.update();
-  pipe.draw();
+
+  for (var i = 0; i < pipes.length; i++) {
+    pipes[i].update();
+    pipes[i].draw();
+    if (pipes[i].x+pipes[i].width < 0){
+        pipes.shift();
+    }
+  }
+}
+function createpipe(){
+    pipes.push(new Pipe());
 }
 function controls(key) {
   switch (key.code) {
@@ -26,21 +37,20 @@ function controls(key) {
   }
 }
 class Pipe {
-    constructor(){
-        this.x = width;
-        this.top = Math.floor((Math.random() * height-50) + 50);
-        this.width = 50;
-        this.speed = 10;
-    }
-    draw(){
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(this.x, 0, this.width, this.top);
-        ctx.fillRect(this.x, this.top+50, this.width, height-this.top);
-    }
-    update(){
-        this.x = this.x-this.speed;
-    }
-
+  constructor() {
+    this.x = width;
+    this.top = Math.floor(Math.random() * height - 60 + 10);
+    this.width = 50;
+    this.speed = 10;
+  }
+  draw() {
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(this.x, 0, this.width, this.top);
+    ctx.fillRect(this.x, this.top + 50, this.width, height - this.top);
+  }
+  update() {
+    this.x = this.x - this.speed;
+  }
 }
 class Bird {
   constructor() {
@@ -53,10 +63,10 @@ class Bird {
     this.point = 0;
   }
   up() {
-      if(this.velocity < 50){
-        this.velocity -= this.uplift;
+    if (this.velocity < 50) {
+      this.velocity -= this.uplift;
     } else {
-        this.velocity = this.uplift;
+      this.velocity = this.uplift;
     }
   }
   draw() {
