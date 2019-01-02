@@ -5,7 +5,7 @@ window.onload = function setup() {
   ctx = c.getContext("2d");
   bird = new Bird();
   pipe = new Pipe();
-  document.addEventListener("keypress", controls);
+  document.addEventListener("keyup", controls);
   setInterval(draw, 1000 / 15);
 };
 function draw() {
@@ -28,12 +28,13 @@ function controls(key) {
 class Pipe {
     constructor(){
         this.x = width;
-        this.height;
+        this.height = Math.floor((Math.random() * height-50) + 50);
+        this.width = 50;
         this.speed = 10;
     }
     draw(){
         ctx.fillStyle = "#fff";
-        ctx.fillRect(this.x, 10, 50, 50);
+        ctx.fillRect(this.x, 0, this.width, this.height);
     }
     update(){
         this.x = this.x-this.speed;
