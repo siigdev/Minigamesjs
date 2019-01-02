@@ -28,13 +28,14 @@ function controls(key) {
 class Pipe {
     constructor(){
         this.x = width;
-        this.height = Math.floor((Math.random() * height-50) + 50);
+        this.top = Math.floor((Math.random() * height-50) + 50);
         this.width = 50;
         this.speed = 10;
     }
     draw(){
         ctx.fillStyle = "#fff";
-        ctx.fillRect(this.x, 0, this.width, this.height);
+        ctx.fillRect(this.x, 0, this.width, this.top);
+        ctx.fillRect(this.x, this.top+50, this.width, height-this.top);
     }
     update(){
         this.x = this.x-this.speed;
