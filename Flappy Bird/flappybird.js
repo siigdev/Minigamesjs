@@ -16,7 +16,7 @@ function draw() {
   bird.update();
   bird.draw();
 
-  for (var i = 0; i < pipes.length; i++) {
+  for (var i = pipes.length-1; i > 0; i--) {
     pipes[i].update();
     pipes[i].draw();
     if (pipes[i].x+pipes[i].width < 0){
