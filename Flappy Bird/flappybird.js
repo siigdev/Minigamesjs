@@ -19,6 +19,7 @@ function draw() {
   for (var i = pipes.length-1; i > 0; i--) {
     pipes[i].update();
     pipes[i].draw();
+    pipes[i].collide(bird);
     if (pipes[i].x+pipes[i].width < 0){
         pipes.shift();
     }
@@ -40,26 +41,32 @@ class Pipe {
   constructor() {
     this.x = width;
     this.top = Math.floor(Math.random() * height - 60 + 10);
+    this.space = 100;
     this.width = 50;
     this.speed = 10;
   }
   draw() {
     ctx.fillStyle = "#fff";
     ctx.fillRect(this.x, 0, this.width, this.top);
-    ctx.fillRect(this.x, this.top + 50, this.width, height - this.top);
+    ctx.fillRect(this.x, this.top + this.space, this.width, height - this.top);
   }
   update() {
     this.x = this.x - this.speed;
+  }
+  collide(bird){
+    if(this.x == bird.x && this.top > bird.y || this.x == bird.x && this.top+this.space < bird.y){
+      console.log("hit");
+    }
   }
 }
 class Bird {
   constructor() {
     this.x = 50;
     this.y = height / 2;
-    this.gravity = 10;
+    this.gravity = 5;
     this.velocity = 0;
-    this.maxspeed = 15;
-    this.uplift = 30;
+    this.maxspeed = 25;
+    this.uplift = 20;
     this.point = 0;
   }
   up() {
