@@ -54,8 +54,12 @@ class Pipe {
     this.x = this.x - this.speed;
   }
   collide(bird){
-    if(this.x == bird.x && this.top > bird.y || this.x == bird.x && this.top+this.space < bird.y){
+    if(this.top > bird.y || this.top+this.space < bird.y){
+      if(this.x == bird.x){
       console.log("hit");
+      console.log(bird.point);
+      bird.point++;
+    }
     }
   }
 }
