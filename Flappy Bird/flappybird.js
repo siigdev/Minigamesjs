@@ -50,15 +50,17 @@ function controls(key) {
 class Pipe {
   constructor() {
     this.x = width;
-    this.top = Math.floor(Math.random() * gameheight)+25;
     this.space = 100;
     this.width = 50;
     this.speed = 10;
+    this.top = Math.floor((Math.random() * gameheight), 100);
+    this.bottom = gameheight-this.top-this.space;
+
   }
   draw() {
     ctx.fillStyle = "#fff";
     ctx.fillRect(this.x, 0, this.width, this.top);
-    ctx.fillRect(this.x, this.top + this.space, this.width, gameheight - (this.top-this.space));
+    ctx.fillRect(this.x, this.top + this.space, this.width, this.bottom);
   }
   update() {
     this.x = this.x - this.speed;
