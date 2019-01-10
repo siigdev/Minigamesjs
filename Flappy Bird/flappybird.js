@@ -7,14 +7,20 @@ window.onload = function setup() {
   pipes = [];
   pipes.push(new Pipe());
   document.addEventListener("keyup", controls);
+  this.background = new Image();
+  this.background.src = "data/background.png";
   setInterval(draw, 1000 / 15);
   setInterval(createpipe, 1500 / 1);
 };
 function draw() {
-  ctx.fillStyle = "#7EC2CB";
-  ctx.fillRect(0, 0, width, height);
+  ctx.drawImage(this.background, 0, 0, 400, 500);
   bird.update();
   bird.draw();
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center"; 
+  ctx.fillStyle = "#fff";
+  ctx.fillText("Points: " + bird.point, width/2, 50);
+
 
   for (var i = pipes.length-1; i > 0; i--) {
     pipes[i].update();
@@ -56,10 +62,8 @@ class Pipe {
   collide(bird){
     if(this.top > bird.y || this.top+this.space < bird.y){
       if(this.x == bird.x){
-      console.log("hit");
-      console.log(bird.point);
-      bird.point++;
-    }
+        bird.point++;
+      }
     }
   }
 }
@@ -73,7 +77,7 @@ class Bird {
     this.uplift = 15;
     this.point = 0;
     this.image = new Image();
-    this.image.src ="data/bird.png";
+    this.image.src = "data/bird.png";
   }
   up() {
     if (this.velocity < 50) {
@@ -83,9 +87,7 @@ class Bird {
     }
   }
   draw() {
-    ctx.fillStyle = "#fff";
     ctx.drawImage(this.image, this.x, this.y, 50, 50);
-    //ctx.fillRect(this.x, this.y, 20, 20);
   }
   update() {
     this.velocity += this.gravity;
