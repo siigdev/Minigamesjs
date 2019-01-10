@@ -67,11 +67,13 @@ class Bird {
   constructor() {
     this.x = 50;
     this.y = height / 2;
-    this.gravity = 5;
+    this.gravity = 3;
     this.velocity = 0;
     this.maxspeed = 25;
-    this.uplift = 20;
+    this.uplift = 15;
     this.point = 0;
+    this.image = new Image();
+    this.image.src ="data/bird.png";
   }
   up() {
     if (this.velocity < 50) {
@@ -82,7 +84,8 @@ class Bird {
   }
   draw() {
     ctx.fillStyle = "#fff";
-    ctx.fillRect(this.x, this.y, 20, 20);
+    ctx.drawImage(this.image, this.x, this.y, 50, 50);
+    //ctx.fillRect(this.x, this.y, 20, 20);
   }
   update() {
     this.velocity += this.gravity;
