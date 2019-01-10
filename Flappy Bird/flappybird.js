@@ -1,19 +1,23 @@
 window.onload = function setup() {
   c = document.getElementById("Canvas");
   height = c.height;
+  gameheight = c.height-100;
   width = c.width;
   ctx = c.getContext("2d");
   bird = new Bird();
   pipes = [];
   pipes.push(new Pipe());
   document.addEventListener("keyup", controls);
-  this.background = new Image();
-  this.background.src = "data/background.png";
+  background = new Image();
+  background.src = "data/background.png";
+  backgroundbottom = new Image();
+  backgroundbottom.src = "data/backgroundbottom.png";
   setInterval(draw, 1000 / 15);
   setInterval(createpipe, 1500 / 1);
 };
 function draw() {
   ctx.drawImage(this.background, 0, 0, 400, 500);
+  ctx.drawImage(backgroundbottom, 0, 500, 400, 100);
   bird.update();
   bird.draw();
   ctx.font = "30px Arial";
@@ -46,7 +50,7 @@ function controls(key) {
 class Pipe {
   constructor() {
     this.x = width;
-    this.top = Math.floor(Math.random() * height - 60 + 10);
+    this.top = Math.floor(Math.random() * gameheight)+25;
     this.space = 100;
     this.width = 50;
     this.speed = 10;
@@ -54,7 +58,7 @@ class Pipe {
   draw() {
     ctx.fillStyle = "#fff";
     ctx.fillRect(this.x, 0, this.width, this.top);
-    ctx.fillRect(this.x, this.top + this.space, this.width, height - this.top);
+    ctx.fillRect(this.x, this.top + this.space, this.width, gameheight - (this.top-this.space));
   }
   update() {
     this.x = this.x - this.speed;
@@ -92,9 +96,9 @@ class Bird {
   update() {
     this.velocity += this.gravity;
     this.y += this.velocity;
-    if (this.y > height) {
+    if (this.y > gameheight) {
       this.velocity = 0;
-      this.y = height - 1;
+      this.y = gameheight - 1;
     }
     if (this.y < 0) {
       this.velocity = 0;
