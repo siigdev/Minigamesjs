@@ -66,8 +66,11 @@ class Pipe {
     this.x = this.x - this.speed;
   }
   collide(bird){
-    if(this.top > bird.y || this.top+this.space < bird.y){
-      if(this.x == bird.x){
+    if(this.x == bird.x){
+      if(this.top > bird.y || this.top+this.space < bird.y){
+        bird.point = 0;
+      }
+      else {
         bird.point++;
       }
     }
