@@ -80,7 +80,7 @@ class Bird {
   constructor() {
     this.x = 50;
     this.y = height / 2;
-    this.gravity = 3;
+    this.gravity = 5;
     this.velocity = 0;
     this.maxspeed = 25;
     this.uplift = 15;
@@ -89,6 +89,7 @@ class Bird {
     this.image.src = "data/bird.png";
   }
   up() {
+    this.velocity = -15;
     if (this.velocity < 50) {
       this.velocity -= this.uplift;
     } else {
