@@ -68,7 +68,7 @@ class Pipe {
   collide(bird){
     if(this.x == bird.x){
       if(this.top > bird.y || this.top+this.space < bird.y){
-        bird.point = 0;
+        bird.die();
       }
       else {
         bird.point++;
@@ -109,5 +109,11 @@ class Bird {
       this.velocity = 0;
       this.y = 0;
     }
+  }
+  die() {
+    this.point = 0;
+    this.y = height/2;
+    this.velocity = 0;
+    pipes = [];
   }
 }
