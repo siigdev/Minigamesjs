@@ -102,6 +102,10 @@ class Bird {
   update() {
     this.velocity += this.gravity;
     this.y += this.velocity;
+    if (this.y > 500){
+      console.log("hej");
+      this.die();
+    }
     if (this.y > gameheight) {
       this.velocity = 0;
       this.y = gameheight - 1;
@@ -110,6 +114,7 @@ class Bird {
       this.velocity = 0;
       this.y = 0;
     }
+    
   }
   die() {
     this.point = 0;
