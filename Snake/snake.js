@@ -1,5 +1,5 @@
 window.onload = function setup() {
-  c = document.getElementById("snakeCanvas");
+  c = document.getElementById("Canvas");
   height = c.height;
   width = c.width;
   scale = 20;
