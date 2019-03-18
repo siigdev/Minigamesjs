@@ -3,12 +3,17 @@ window.onload = function setup() {
     height = c.height;
     width = c.width;
     ctx = c.getContext("2d");
+    keys = [];
   
     ship = new Ship();
-    document.addEventListener("keydown", controls);
+    document.addEventListener("keydown", function(e) {keys[e.keyCode]=true});
+    document.addEventListener("keyup", function(e) {keys[e.keyCode]=false});
+    
     setInterval(draw, 1000 / 50);
+    
 }
 function draw() {
+  controls();
     ctx.save();
     ctx.fillStyle = "#222";
     ctx.fillRect(0, 0, width, height);
@@ -19,15 +24,16 @@ function draw() {
     ship.draw();
     ctx.restore();
 }
-function controls(key) {
-    if (key.key == "ArrowUp")
+function controls() {
+  console.log()
+    if (keys[38])
         ship.accelerate();
-    if (key.key == "ArrowDown")
-        ship.decelerate();
-    if (key.key == "ArrowLeft")
-        ship.turn(1);
-    if (key.key == "ArrowRight")
-        ship.turn(0);
+    // if (key.key == "ArrowDown")
+    //     ship.decelerate();
+    if (keys[37])
+         ship.turn(1);
+    if (keys[39])
+         ship.turn(0);
     }
 
 class Asteroid {
@@ -70,6 +76,18 @@ class Ship {
     update() {
     }
     accelerate() {
+      if (this.x < 0) {
+        this.x = height;
+      }
+      if (this.y < 0) {
+        this.y = width;
+      }
+      if (this.y > width){
+        this.y = 0;
+      }
+      if (this.x > height){
+        this.x = 0;
+      }
       this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
       this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
     }
