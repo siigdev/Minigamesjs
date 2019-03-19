@@ -4,9 +4,12 @@ window.onload = function setup() {
     width = c.width;
     ctx = c.getContext("2d");
     keys = [];
+    asteroids = [];
   
     ship = new Ship();
-    asteroid = new Asteroid();
+    for (i=0; i<10; i++){
+      asteroids.push(new Asteroid());
+    }
     document.addEventListener("keydown", function(e) {keys[e.keyCode]=true});
     document.addEventListener("keyup", function(e) {keys[e.keyCode]=false});
     
@@ -24,9 +27,12 @@ function draw() {
     ship.draw();
     ctx.restore();
 
-    ctx.save();
-    asteroid.draw();
-    ctx.restore();
+    
+    for (i=0; i < asteroids.length; i++){
+      ctx.save();
+      asteroids[i].draw();
+      ctx.restore();
+    }
 }
 function controls() {
   console.log()
@@ -52,21 +58,22 @@ class Asteroid {
     constructor() {
         this.x = Math.floor((Math.random()*width)+0);
         this.y = Math.floor((Math.random()*height)+0);
-        this.r = Math.floor((Math.random()*15)+35);
-        this.edges = Math.floor((Math.random()*15)+5)
+        this.r = Math.floor((Math.random()*50)+5);
+        this.edges = Math.floor((Math.random()*15)+6)
         this.a = (Math.PI * 2)/this.edges;
         this.offset = [];
         for (var i=0; i<this.edges; i++){
-          this.offset.push(Math.floor((Math.random()*10)-5));
+          this.offset.push(Math.floor((Math.random()*15)-3));
         }
     }
     draw() {
 
       ctx.translate(this.x,this.y);
       ctx.strokeStyle = "#fff";
-      ctx.moveTo(this.r, 0);
+      ctx.moveTo(this.r,0);
+      ctx.beginPath();
       for (var i=0; i < this.edges; i++){
-        ctx.lineTo(this.r+this.offset[i]*Math.cos(this.a*i),this.r+this.offset[i]*Math.sin(this.a*i));
+        ctx.lineTo((this.r+this.offset[i])*Math.cos(this.a*i),(this.r+this.offset[i])*Math.sin(this.a*i));
       }
       ctx.closePath();
       ctx.stroke();
