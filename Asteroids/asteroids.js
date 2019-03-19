@@ -6,6 +6,7 @@ window.onload = function setup() {
     keys = [];
   
     ship = new Ship();
+    asteroid = new Asteroid();
     document.addEventListener("keydown", function(e) {keys[e.keyCode]=true});
     document.addEventListener("keyup", function(e) {keys[e.keyCode]=false});
     
@@ -20,29 +21,55 @@ function draw() {
     ctx.restore();
 
     ctx.save();
-    ship.update();
     ship.draw();
+    ctx.restore();
+
+    ctx.save();
+    asteroid.draw();
     ctx.restore();
 }
 function controls() {
   console.log()
-    if (keys[38])
+    if (keys[38]){
         ship.accelerate();
+      }
     // if (key.key == "ArrowDown")
     //     ship.decelerate();
-    if (keys[37])
-         ship.turn(1);
-    if (keys[39])
+    if (keys[37]){
          ship.turn(0);
+        }
+    if (keys[39]){
+         ship.turn(1);
+        }
+    if (keys[32]){
+      ship.fire();
+      console.log("FIRING");
     }
+    
+}
 
 class Asteroid {
     constructor() {
-        this.x = 10;
-        this.y = 10;
-
+        this.x = Math.floor((Math.random()*width)+0);
+        this.y = Math.floor((Math.random()*height)+0);
+        this.r = Math.floor((Math.random()*15)+35);
+        this.edges = Math.floor((Math.random()*15)+5)
+        this.a = (Math.PI * 2)/this.edges;
+        this.offset = [];
+        for (var i=0; i<this.edges; i++){
+          this.offset.push(Math.floor((Math.random()*10)-5));
+        }
     }
     draw() {
+
+      ctx.translate(this.x,this.y);
+      ctx.strokeStyle = "#fff";
+      ctx.moveTo(this.r, 0);
+      for (var i=0; i < this.edges; i++){
+        ctx.lineTo(this.r+this.offset[i]*Math.cos(this.a*i),this.r+this.offset[i]*Math.sin(this.a*i));
+      }
+      ctx.closePath();
+      ctx.stroke();
 
     }
     update() {
@@ -73,8 +100,6 @@ class Ship {
         ctx.closePath();
         ctx.stroke();
     }
-    update() {
-    }
     accelerate() {
       if (this.x < 0) {
         this.x = height;
@@ -99,5 +124,16 @@ class Ship {
         this.angle = this.angle-10;
       }
     }
+    fire() {
+    }
 }
+class Bullet {
+  constructor() {
+    this.x;
+    this.y;
+    this.speed;
+  }
+  draw() {
 
+  }
+}
