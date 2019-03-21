@@ -31,6 +31,7 @@ function draw() {
     for (i=0; i < asteroids.length; i++){
       ctx.save();
       asteroids[i].draw();
+      asteroids[i].update();
       ctx.restore();
     }
 }
@@ -59,7 +60,9 @@ class Asteroid {
         this.x = Math.floor((Math.random()*width)+0);
         this.y = Math.floor((Math.random()*height)+0);
         this.r = Math.floor((Math.random()*50)+5);
-        this.edges = Math.floor((Math.random()*15)+6)
+        this.edges = Math.floor((Math.random()*15)+8)
+        this.angle = Math.floor((Math.random()*360)+0);
+        this.speed = 0.75
         this.a = (Math.PI * 2)/this.edges;
         this.offset = [];
         for (var i=0; i<this.edges; i++){
@@ -72,6 +75,7 @@ class Asteroid {
       ctx.strokeStyle = "#fff";
       ctx.moveTo(this.r,0);
       ctx.beginPath();
+      
       for (var i=0; i < this.edges; i++){
         ctx.lineTo((this.r+this.offset[i])*Math.cos(this.a*i),(this.r+this.offset[i])*Math.sin(this.a*i));
       }
@@ -80,7 +84,20 @@ class Asteroid {
 
     }
     update() {
-
+      if (this.x < 0) {
+        this.x = height;
+      }
+      if (this.y < 0) {
+        this.y = width;
+      }
+      if (this.y > width){
+        this.y = 0;
+      }
+      if (this.x > height){
+        this.x = 0;
+      }
+      this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
+      this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
     }
 
 }
