@@ -29,6 +29,7 @@ function draw() {
 
   ctx.save();
   ship.draw();
+  ship.update();
   ctx.restore();
 
   for (i = 0; i < bullets.length; i++){
@@ -114,10 +115,11 @@ class Ship {
   constructor() {
     this.x = width / 2;
     this.y = height / 2;
-    this.maxspeed;
+    this.maxspeed = 8;
     this.acceleration;
     this.angle = 0;
-    this.speed = 5;
+    this.speed = 0;
+    this.deaccelerate = 0.99;
   }
   draw() {
     ctx.translate(this.x, this.y);
@@ -145,6 +147,12 @@ class Ship {
     if (this.x > height) {
       this.x = 0;
     }
+    if (this.speed < this.maxspeed){
+      this.speed ++;
+    }
+  }
+  update() {
+    this.speed = this.speed * this.deaccelerate
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
     this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
   }
@@ -162,6 +170,10 @@ class Bullet {
     this.y = ship.y;
     this.angle = ship.angle;
     this.speed = 10;
+  }
+  draw() {
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(this.x, this.y, 5, 5);
   }
   update() {
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
