@@ -8,7 +8,7 @@ window.onload = function setup() {
   bullets = [];
 
   ship = new Ship();
-  for (i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     asteroids.push(new Asteroid());
   }
   document.addEventListener("keydown", function (e) {
@@ -17,7 +17,7 @@ window.onload = function setup() {
   document.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false
   });
-  setInterval(draw, 1000 / 50);
+  setInterval(draw, 1000 / 40);
 }
 
 function draw() {
@@ -32,18 +32,22 @@ function draw() {
   ship.update();
   ctx.restore();
 
-  for (i = 0; i < bullets.length; i++){
+  for (let bullet of bullets) {
     ctx.save();
-    bullets[i].draw();
-    bullets[i].update();
+    bullet.draw();
+    bullet.update();
     ctx.restore();
+    if (bullet.x < 0 || bullet.y < 0 || bullet.y > width || bullet.x > height) {
+      bullets.splice(0, 5);
+    }
   }
 
-  for (i = 0; i < asteroids.length; i++) {
+  for (let asteroid of asteroids) {
     ctx.save();
-    asteroids[i].draw();
-    asteroids[i].update();
+    asteroid.draw();
+    asteroid.update();
     ctx.restore();
+
   }
 }
 
@@ -59,7 +63,12 @@ function controls() {
     ship.turn(1);
   }
   if (keys[32]) {
-    bullets.push(new Bullet());
+    if (bullets.length > 10) {
+      return;
+    }
+    else {
+      bullets.push(new Bullet());
+    }
   }
 
 }
@@ -74,7 +83,7 @@ class Asteroid {
     this.speed = 0.75
     this.a = (Math.PI * 2) / this.edges;
     this.offset = [];
-    for (var i = 0; i < this.edges; i++) {
+    for (let i = 0; i < this.edges; i++) {
       this.offset.push(Math.floor((Math.random() * 15) - 3));
     }
   }
@@ -85,7 +94,7 @@ class Asteroid {
     ctx.moveTo(this.r, 0);
     ctx.beginPath();
 
-    for (var i = 0; i < this.edges; i++) {
+    for (let i = 0; i < this.edges; i++) {
       ctx.lineTo((this.r + this.offset[i]) * Math.cos(this.a * i), (this.r + this.offset[i]) * Math.sin(this.a * i));
     }
     ctx.closePath();
@@ -135,6 +144,12 @@ class Ship {
     ctx.stroke();
   }
   accelerate() {
+
+    if (this.speed < this.maxspeed) {
+      this.speed++;
+    }
+  }
+  update() {
     if (this.x < 0) {
       this.x = height;
     }
@@ -147,11 +162,6 @@ class Ship {
     if (this.x > height) {
       this.x = 0;
     }
-    if (this.speed < this.maxspeed){
-      this.speed ++;
-    }
-  }
-  update() {
     this.speed = this.speed * this.deaccelerate
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
     this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
@@ -173,7 +183,7 @@ class Bullet {
   }
   draw() {
     ctx.fillStyle = "#fff";
-    ctx.fillRect(this.x, this.y, 5, 5);
+    ctx.fillRect(this.x, this.y, 3, 3);
   }
   update() {
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
