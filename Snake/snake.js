@@ -77,7 +77,7 @@ class Snake {
   }
   draw() {
     ctx.fillStyle = "lime";
-    for (var i = 0; i < this.tail.length; i++) {
+    for (let i = 0; i < this.tail.length; i++) {
       ctx.fillRect(this.tail[i].x, this.tail[i].y, scale, scale);
     }
     ctx.fillRect(this.x, this.y, scale, scale);

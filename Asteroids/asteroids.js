@@ -11,12 +11,8 @@ window.onload = function setup() {
   for (let i = 0; i < 10; i++) {
     asteroids.push(new Asteroid());
   }
-  document.addEventListener("keydown", function (e) {
-    keys[e.keyCode] = true
-  });
-  document.addEventListener("keyup", function (e) {
-    keys[e.keyCode] = false
-  });
+  document.addEventListener("keydown", e => keys[e.keyCode] = true);
+  document.addEventListener("keyup", e => keys[e.keyCode] = false);
   setInterval(draw, 1000 / 40);
 }
 
@@ -47,12 +43,10 @@ function draw() {
     asteroid.draw();
     asteroid.update();
     ctx.restore();
-
   }
 }
 
 function controls() {
-  console.log()
   if (keys[38]) {
     ship.accelerate();
   }
@@ -70,7 +64,6 @@ function controls() {
       bullets.push(new Bullet());
     }
   }
-
 }
 
 class Asteroid {
@@ -88,7 +81,6 @@ class Asteroid {
     }
   }
   draw() {
-
     ctx.translate(this.x, this.y);
     ctx.strokeStyle = "#fff";
     ctx.moveTo(this.r, 0);
@@ -117,7 +109,6 @@ class Asteroid {
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
     this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
   }
-
 }
 
 class Ship {
