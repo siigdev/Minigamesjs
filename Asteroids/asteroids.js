@@ -76,6 +76,8 @@ class Asteroid {
     this.speed = 0.75
     this.a = (Math.PI * 2) / this.edges;
     this.offset = [];
+    this.points = [];
+    this.sides = [];
     for (let i = 0; i < this.edges; i++) {
       this.offset.push(Math.floor((Math.random() * 15) - 3));
     }
@@ -87,10 +89,20 @@ class Asteroid {
     ctx.beginPath();
 
     for (let i = 0; i < this.edges; i++) {
-      ctx.lineTo((this.r + this.offset[i]) * Math.cos(this.a * i), (this.r + this.offset[i]) * Math.sin(this.a * i));
+      let px = (this.r + this.offset[i]) * Math.cos(this.a * i)
+      let py = (this.r + this.offset[i]) * Math.sin(this.a * i)
+      if (i === 0){
+        ctx.lineTo(px, py);
+      }
+      else {
+        ctx.lineTo(px, py);
+        this.sides.push([{x: this.points[i-1].x, y: this.points[i-1].y}, {x: px, y: py}])
+      }
+      this.points.push({x: px, y: py});
     }
     ctx.closePath();
     ctx.stroke();
+    console.log({p: this.points, s: this.sides});
 
   }
   update() {
