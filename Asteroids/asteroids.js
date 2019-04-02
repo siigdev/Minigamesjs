@@ -28,6 +28,10 @@ function draw() {
   ship.update();
   ctx.restore();
 
+  ctx.fillStyle = "white";
+  ctx.font = "25px Arial";
+  ctx.fillText(ship.point, width / 2, 25);
+
   for (let bullet of bullets) {
     ctx.save();
     bullet.draw();
@@ -102,7 +106,6 @@ class Asteroid {
     }
     ctx.closePath();
     ctx.stroke();
-    console.log({p: this.points, s: this.sides});
 
   }
   update() {
@@ -132,6 +135,7 @@ class Ship {
     this.angle = 0;
     this.speed = 0;
     this.deaccelerate = 0.99;
+    this.point = 0;
   }
   draw() {
     ctx.translate(this.x, this.y);
