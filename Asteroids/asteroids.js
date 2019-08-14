@@ -32,12 +32,19 @@ function draw() {
   ctx.font = "25px Arial";
   ctx.fillText(ship.point, width / 2, 25);
 
-  for (let bullet of bullets) {
+  for (let i = 0; i < bullets.length; i++) {
     ctx.save();
-    bullet.draw();
-    bullet.update();
+    bullets[i].draw();
+    bullets[i].update();
     ctx.restore();
-    if (bullet.x < 0 || bullet.y < 0 || bullet.y > width || bullet.x > height) {
+    
+    //console.log(bullets[i]);
+    for (let j = 0; j < asteroids.length; j++) { 
+      if (bullets[i].hits(asteroids[j])){
+        //Collision detected between bullet and asteroid
+      }
+    }
+    if (bullets[i].x < 0 || bullets[i].y < 0 || bullets[i].y > width || bullets[i].x > height) {
       bullets.splice(0, 5);
     }
   }
@@ -195,5 +202,19 @@ class Bullet {
   update() {
     this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
     this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
+  }
+  hits(asteroid) {
+    var d = this.distance(this.x, this.y, asteroid.x, asteroid.y)
+    if (d < asteroid.r){
+      // Collision has happened!
+    }
+  }
+
+  // Function to calculate distance between two points in canvas
+  distance(x1, y1, x2, y2) {
+    var a = x1 - x2;
+    var b = y1 - y2;
+    return Math.sqrt(a * a + b * b);
+
   }
 }
