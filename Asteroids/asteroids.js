@@ -33,20 +33,24 @@ function draw() {
   ctx.fillText(ship.point, width / 2, 25);
 
   for (let i = 0; i < bullets.length; i++) {
+    
     ctx.save();
     bullets[i].draw();
     bullets[i].update();
     ctx.restore();
     
-    //console.log(bullets[i]);
     for (let j = 0; j < asteroids.length; j++) { 
       if (bullets[i].hits(asteroids[j])){
-        //Collision detected between bullet and asteroid
+        console.log("should work?");
+        asteroids.splice(j, 1);
+        bullets.splice(i, 1);
+        break;
       }
     }
     if (bullets[i].x < 0 || bullets[i].y < 0 || bullets[i].y > width || bullets[i].x > height) {
       bullets.splice(0, 5);
     }
+    
   }
 
   for (let asteroid of asteroids) {
@@ -206,7 +210,7 @@ class Bullet {
   hits(asteroid) {
     var d = this.distance(this.x, this.y, asteroid.x, asteroid.y)
     if (d < asteroid.r){
-      // Collision has happened!
+      return true;
     }
   }
 
