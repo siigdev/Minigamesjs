@@ -44,6 +44,7 @@ function draw() {
         console.log("should work?");
         asteroids.splice(j, 1);
         bullets.splice(i, 1);
+        ship.addpoint();
         break;
       }
     }
@@ -53,11 +54,14 @@ function draw() {
     
   }
 
-  for (let asteroid of asteroids) {
+  for (let j = 0; j < asteroids.length; j++) {
     ctx.save();
-    asteroid.draw();
-    asteroid.update();
+    asteroids[j].draw();
+    asteroids[j].update();
     ctx.restore();
+    if(ship.hits(asteroids[j])) {
+      ship.restartpoints();
+    }
   }
 }
 
@@ -190,6 +194,26 @@ class Ship {
     } else if (heading == 0) {
       this.angle = this.angle - 10;
     }
+  }
+  addpoint() {
+    this.point++;
+  }
+  restartpoints() {
+    this.point = 0;
+  }
+  hits(asteroid) {
+    var d = this.distance(this.x, this.y, asteroid.x, asteroid.y)
+    if (d < asteroid.r){
+      return true;
+    }
+  }
+
+  // Function to calculate distance between two points in canvas
+  distance(x1, y1, x2, y2) {
+    var a = x1 - x2;
+    var b = y1 - y2;
+    return Math.sqrt(a * a + b * b);
+
   }
 }
 class Bullet {
