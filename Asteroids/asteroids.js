@@ -8,14 +8,25 @@ window.onload = function setup() {
   bullets = [];
 
   ship = new Ship();
+  createAsteroids();
+  document.addEventListener("keydown", e => keys[e.keyCode] = true);
+  document.addEventListener("keyup", e => keys[e.keyCode] = false);
+  setInterval(draw, 1000 / 50);
+}
+
+function gameOver() {
+    bullets = [];
+    asteroids = [];
+    ship.setPosition(width/2, height/2);
+    ship.setSpeed(0);
+    ship.restartpoints();
+    createAsteroids();
+}
+function createAsteroids() {
   for (let i = 0; i < 10; i++) {
     asteroids.push(new Asteroid());
   }
-  document.addEventListener("keydown", e => keys[e.keyCode] = true);
-  document.addEventListener("keyup", e => keys[e.keyCode] = false);
-  setInterval(draw, 1000 / 40);
 }
-
 function draw() {
   controls();
   ctx.save();
@@ -41,13 +52,13 @@ function draw() {
     
     for (let j = 0; j < asteroids.length; j++) { 
       if (bullets[i].hits(asteroids[j])){
-        console.log("should work?");
         asteroids.splice(j, 1);
         bullets.splice(i, 1);
         ship.addpoint();
         break;
       }
     }
+    // Remove from bullet array if out of bounds
     if (bullets[i].x < 0 || bullets[i].y < 0 || bullets[i].y > width || bullets[i].x > height) {
       bullets.splice(0, 5);
     }
@@ -60,7 +71,7 @@ function draw() {
     asteroids[j].update();
     ctx.restore();
     if(ship.hits(asteroids[j])) {
-      ship.restartpoints();
+      gameOver();
     }
   }
 }
@@ -214,6 +225,13 @@ class Ship {
     var b = y1 - y2;
     return Math.sqrt(a * a + b * b);
 
+  }
+  setPosition(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  setSpeed(speed) {
+    this.speed = speed;
   }
 }
 class Bullet {
